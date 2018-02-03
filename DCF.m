@@ -4,12 +4,11 @@ function ScoreMatrix = DCF(split, k, featureRank, networkRank, lambda, alpha)
     %%% k           : Rank of the parameter matrix Z.
     %%% featureRank : Number of compressed dimensions (microarray gene expression data).
     %%% networkRank : Number of latent features from similarity networks.
-    %%% loss	    : loss function to be used (10 - for squared loss) 
     %%% lambda      : Regularization parameter l in the objective.
     %%% alpha       : the parameter r for PU formulation
 
     %%%% OUTPUT:
-    %%% ScoreMatrix : Matrix of size # genes x # diseases; Each column gives the scores estimated by IMC for the corresponding OMIM disease.
+    %%% ScoreMatrix : Matrix of size # genes x # diseases.
     
 	%%% Data files are provided i n the same directory.
     load ('genes_phenes.mat');
@@ -90,5 +89,4 @@ function ScoreMatrix = DCF(split, k, featureRank, networkRank, lambda, alpha)
   
     [W H rmse walltime] = imf_train(sparse(double(GenePheneTraining)), sparse(double(Features)), sparse(double(ColFeatures)),  ['-n 16 -t 15 -T 5 -g 20 -p 3 -a 0 -s 11 -k ', num2str(k), ' -l ', num2str(lambda),  ' -r ', num2str(alpha)]);
     ScoreMatrix = Features * W *H' * ColFeatures';
-    save ScoreMatrix.mat ScoreMatrix;
  end
